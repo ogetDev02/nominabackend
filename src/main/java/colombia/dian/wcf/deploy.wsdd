@@ -1,0 +1,189 @@
+<!-- Use this file to deploy some handlers/chains and services      -->
+<!-- Two ways to do this:                                           -->
+<!--   java org.apache.axis.client.AdminClient deploy.wsdd          -->
+<!--      after the axis server is running                          -->
+<!-- or                                                             -->
+<!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   -->
+<!--      from the same directory that the Axis engine runs         -->
+
+<deployment
+    xmlns="http://xml.apache.org/axis/wsdd/"
+    xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from WcfDianCustomerServices WSDL service -->
+
+  <service name="WSHttpBinding_IWcfDianCustomerServices" provider="java:RPC" style="wrapped" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://wcf.dian.colombia"/>
+      <parameter name="wsdlServiceElement" value="WcfDianCustomerServices"/>
+      <parameter name="schemaQualified" value="http://schemas.microsoft.com/2003/10/Serialization/Arrays,http://schemas.datacontract.org/2004/07/NumberRangeResponseList,http://wcf.dian.colombia,http://schemas.datacontract.org/2004/07/DianResponse,http://schemas.datacontract.org/2004/07/NumberRangeResponse,http://schemas.datacontract.org/2004/07/XmlParamsResponseTrackId,http://schemas.datacontract.org/2004/07/EventResponse,http://schemas.microsoft.com/2003/10/Serialization/,http://schemas.datacontract.org/2004/07/UploadDocumentResponse,http://schemas.datacontract.org/2004/07/ExchangeEmailResponse,http://schemas.datacontract.org/2004/07/DocIdentifierWithEventsResponse"/>
+      <parameter name="schemaUnqualified" value="http://wcf.dian.colombia/Imports"/>
+      <parameter name="wsdlServicePort" value="WSHttpBinding_IWcfDianCustomerServices"/>
+      <parameter name="className" value="colombia.dian.wcf.WSHttpBinding_IWcfDianCustomerServicesImpl"/>
+      <parameter name="wsdlPortType" value="IWcfDianCustomerServices"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation name="getExchangeEmails" qname="operNS:GetExchangeEmails" xmlns:operNS="http://wcf.dian.colombia" returnQName="retNS:GetExchangeEmailsResult" xmlns:retNS="http://wcf.dian.colombia" returnType="rtns:ExchangeEmailResponse" xmlns:rtns="http://schemas.datacontract.org/2004/07/ExchangeEmailResponse" soapAction="http://wcf.dian.colombia/IWcfDianCustomerServices/GetExchangeEmails" >
+      </operation>
+      <operation name="getStatus" qname="operNS:GetStatus" xmlns:operNS="http://wcf.dian.colombia" returnQName="retNS:GetStatusResult" xmlns:retNS="http://wcf.dian.colombia" returnType="rtns:DianResponse" xmlns:rtns="http://schemas.datacontract.org/2004/07/DianResponse" soapAction="http://wcf.dian.colombia/IWcfDianCustomerServices/GetStatus" >
+        <parameter qname="pns:trackId" xmlns:pns="http://wcf.dian.colombia" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="getStatusZip" qname="operNS:GetStatusZip" xmlns:operNS="http://wcf.dian.colombia" returnQName="retNS:GetStatusZipResult" xmlns:retNS="http://wcf.dian.colombia" returnType="rtns:ArrayOfDianResponse" xmlns:rtns="http://schemas.datacontract.org/2004/07/DianResponse" returnItemQName="tns:DianResponse" xmlns:tns="http://schemas.datacontract.org/2004/07/DianResponse" soapAction="http://wcf.dian.colombia/IWcfDianCustomerServices/GetStatusZip" >
+        <parameter qname="pns:trackId" xmlns:pns="http://wcf.dian.colombia" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="getStatusEvent" qname="operNS:GetStatusEvent" xmlns:operNS="http://wcf.dian.colombia" returnQName="retNS:GetStatusEventResult" xmlns:retNS="http://wcf.dian.colombia" returnType="rtns:DianResponse" xmlns:rtns="http://schemas.datacontract.org/2004/07/DianResponse" soapAction="http://wcf.dian.colombia/IWcfDianCustomerServices/GetStatusEvent" >
+        <parameter qname="pns:trackId" xmlns:pns="http://wcf.dian.colombia" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="sendBillAsync" qname="operNS:SendBillAsync" xmlns:operNS="http://wcf.dian.colombia" returnQName="retNS:SendBillAsyncResult" xmlns:retNS="http://wcf.dian.colombia" returnType="rtns:UploadDocumentResponse" xmlns:rtns="http://schemas.datacontract.org/2004/07/UploadDocumentResponse" soapAction="http://wcf.dian.colombia/IWcfDianCustomerServices/SendBillAsync" >
+        <parameter qname="pns:fileName" xmlns:pns="http://wcf.dian.colombia" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:contentFile" xmlns:pns="http://wcf.dian.colombia" type="tns:base64Binary" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="sendTestSetAsync" qname="operNS:SendTestSetAsync" xmlns:operNS="http://wcf.dian.colombia" returnQName="retNS:SendTestSetAsyncResult" xmlns:retNS="http://wcf.dian.colombia" returnType="rtns:UploadDocumentResponse" xmlns:rtns="http://schemas.datacontract.org/2004/07/UploadDocumentResponse" soapAction="http://wcf.dian.colombia/IWcfDianCustomerServices/SendTestSetAsync" >
+        <parameter qname="pns:fileName" xmlns:pns="http://wcf.dian.colombia" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:contentFile" xmlns:pns="http://wcf.dian.colombia" type="tns:base64Binary" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:testSetId" xmlns:pns="http://wcf.dian.colombia" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="sendBillSync" qname="operNS:SendBillSync" xmlns:operNS="http://wcf.dian.colombia" returnQName="retNS:SendBillSyncResult" xmlns:retNS="http://wcf.dian.colombia" returnType="rtns:DianResponse" xmlns:rtns="http://schemas.datacontract.org/2004/07/DianResponse" soapAction="http://wcf.dian.colombia/IWcfDianCustomerServices/SendBillSync" >
+        <parameter qname="pns:fileName" xmlns:pns="http://wcf.dian.colombia" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:contentFile" xmlns:pns="http://wcf.dian.colombia" type="tns:base64Binary" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="sendBillAttachmentAsync" qname="operNS:SendBillAttachmentAsync" xmlns:operNS="http://wcf.dian.colombia" returnQName="retNS:SendBillAttachmentAsyncResult" xmlns:retNS="http://wcf.dian.colombia" returnType="rtns:UploadDocumentResponse" xmlns:rtns="http://schemas.datacontract.org/2004/07/UploadDocumentResponse" soapAction="http://wcf.dian.colombia/IWcfDianCustomerServices/SendBillAttachmentAsync" >
+        <parameter qname="pns:fileName" xmlns:pns="http://wcf.dian.colombia" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:contentFile" xmlns:pns="http://wcf.dian.colombia" type="tns:base64Binary" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="sendEventUpdateStatus" qname="operNS:SendEventUpdateStatus" xmlns:operNS="http://wcf.dian.colombia" returnQName="retNS:SendEventUpdateStatusResult" xmlns:retNS="http://wcf.dian.colombia" returnType="rtns:DianResponse" xmlns:rtns="http://schemas.datacontract.org/2004/07/DianResponse" soapAction="http://wcf.dian.colombia/IWcfDianCustomerServices/SendEventUpdateStatus" >
+        <parameter qname="pns:contentFile" xmlns:pns="http://wcf.dian.colombia" type="tns:base64Binary" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="sendNominaSync" qname="operNS:SendNominaSync" xmlns:operNS="http://wcf.dian.colombia" returnQName="retNS:SendNominaSyncResult" xmlns:retNS="http://wcf.dian.colombia" returnType="rtns:DianResponse" xmlns:rtns="http://schemas.datacontract.org/2004/07/DianResponse" soapAction="http://wcf.dian.colombia/IWcfDianCustomerServices/SendNominaSync" >
+        <parameter qname="pns:contentFile" xmlns:pns="http://wcf.dian.colombia" type="tns:base64Binary" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="getNumberingRange" qname="operNS:GetNumberingRange" xmlns:operNS="http://wcf.dian.colombia" returnQName="retNS:GetNumberingRangeResult" xmlns:retNS="http://wcf.dian.colombia" returnType="rtns:NumberRangeResponseList" xmlns:rtns="http://schemas.datacontract.org/2004/07/NumberRangeResponseList" soapAction="http://wcf.dian.colombia/IWcfDianCustomerServices/GetNumberingRange" >
+        <parameter qname="pns:accountCode" xmlns:pns="http://wcf.dian.colombia" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:accountCodeT" xmlns:pns="http://wcf.dian.colombia" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:softwareCode" xmlns:pns="http://wcf.dian.colombia" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="getXmlByDocumentKey" qname="operNS:GetXmlByDocumentKey" xmlns:operNS="http://wcf.dian.colombia" returnQName="retNS:GetXmlByDocumentKeyResult" xmlns:retNS="http://wcf.dian.colombia" returnType="rtns:EventResponse" xmlns:rtns="http://schemas.datacontract.org/2004/07/EventResponse" soapAction="http://wcf.dian.colombia/IWcfDianCustomerServices/GetXmlByDocumentKey" >
+        <parameter qname="pns:trackId" xmlns:pns="http://wcf.dian.colombia" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="getDocIdentifierWithEvents" qname="operNS:GetDocIdentifierWithEvents" xmlns:operNS="http://wcf.dian.colombia" returnQName="retNS:GetDocIdentifierWithEventsResult" xmlns:retNS="http://wcf.dian.colombia" returnType="rtns:DocIdentifierWithEventsResponse" xmlns:rtns="http://schemas.datacontract.org/2004/07/DocIdentifierWithEventsResponse" soapAction="http://wcf.dian.colombia/IWcfDianCustomerServices/GetDocIdentifierWithEvents" >
+        <parameter qname="pns:contributorCode" xmlns:pns="http://wcf.dian.colombia" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:dateNumber" xmlns:pns="http://wcf.dian.colombia" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <parameter name="allowedMethods" value="getDocIdentifierWithEvents getExchangeEmails sendBillAttachmentAsync getStatus sendBillAsync getStatusZip sendEventUpdateStatus getStatusEvent sendBillSync getNumberingRange getXmlByDocumentKey sendTestSetAsync sendNominaSync"/>
+
+      <typeMapping
+        xmlns:ns="http://schemas.datacontract.org/2004/07/UploadDocumentResponse"
+        qname="ns:UploadDocumentResponse"
+        type="java:org.datacontract.schemas._2004._07.UploadDocumentResponse.UploadDocumentResponse"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://schemas.microsoft.com/2003/10/Serialization/"
+        qname="ns:duration"
+        type="java:org.apache.axis.types.Duration"
+        serializer="org.apache.axis.encoding.ser.SimpleSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.SimpleDeserializerFactory"
+        encodingStyle=""
+      />
+      <arrayMapping
+        xmlns:ns="http://schemas.microsoft.com/2003/10/Serialization/Arrays"
+        qname="ns:ArrayOfstring"
+        type="java:java.lang.String[]"
+        innerType="cmp-ns:string" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://schemas.microsoft.com/2003/10/Serialization/"
+        qname="ns:char"
+        type="java:int"
+        serializer="org.apache.axis.encoding.ser.SimpleSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.SimpleDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://schemas.datacontract.org/2004/07/XmlParamsResponseTrackId"
+        qname="ns:XmlParamsResponseTrackId"
+        type="java:org.datacontract.schemas._2004._07.XmlParamsResponseTrackId.XmlParamsResponseTrackId"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://schemas.datacontract.org/2004/07/EventResponse"
+        qname="ns:EventResponse"
+        type="java:org.datacontract.schemas._2004._07.EventResponse.EventResponse"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <arrayMapping
+        xmlns:ns="http://schemas.datacontract.org/2004/07/XmlParamsResponseTrackId"
+        qname="ns:ArrayOfXmlParamsResponseTrackId"
+        type="java:org.datacontract.schemas._2004._07.XmlParamsResponseTrackId.XmlParamsResponseTrackId[]"
+        innerType="cmp-ns:XmlParamsResponseTrackId" xmlns:cmp-ns="http://schemas.datacontract.org/2004/07/XmlParamsResponseTrackId"
+        encodingStyle=""
+      />
+      <arrayMapping
+        xmlns:ns="http://schemas.datacontract.org/2004/07/DianResponse"
+        qname="ns:ArrayOfDianResponse"
+        type="java:org.datacontract.schemas._2004._07.DianResponse.DianResponse[]"
+        innerType="cmp-ns:DianResponse" xmlns:cmp-ns="http://schemas.datacontract.org/2004/07/DianResponse"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://schemas.datacontract.org/2004/07/NumberRangeResponse"
+        qname="ns:NumberRangeResponse"
+        type="java:org.datacontract.schemas._2004._07.NumberRangeResponse.NumberRangeResponse"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <arrayMapping
+        xmlns:ns="http://schemas.datacontract.org/2004/07/NumberRangeResponse"
+        qname="ns:ArrayOfNumberRangeResponse"
+        type="java:org.datacontract.schemas._2004._07.NumberRangeResponse.NumberRangeResponse[]"
+        innerType="cmp-ns:NumberRangeResponse" xmlns:cmp-ns="http://schemas.datacontract.org/2004/07/NumberRangeResponse"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://schemas.datacontract.org/2004/07/DianResponse"
+        qname="ns:DianResponse"
+        type="java:org.datacontract.schemas._2004._07.DianResponse.DianResponse"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://schemas.datacontract.org/2004/07/DocIdentifierWithEventsResponse"
+        qname="ns:DocIdentifierWithEventsResponse"
+        type="java:org.datacontract.schemas._2004._07.DocIdentifierWithEventsResponse.DocIdentifierWithEventsResponse"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://schemas.datacontract.org/2004/07/NumberRangeResponseList"
+        qname="ns:NumberRangeResponseList"
+        type="java:org.datacontract.schemas._2004._07.NumberRangeResponseList.NumberRangeResponseList"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://schemas.microsoft.com/2003/10/Serialization/"
+        qname="ns:guid"
+        type="java:java.lang.String"
+        serializer="org.apache.axis.encoding.ser.SimpleSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.SimpleDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://schemas.datacontract.org/2004/07/ExchangeEmailResponse"
+        qname="ns:ExchangeEmailResponse"
+        type="java:org.datacontract.schemas._2004._07.ExchangeEmailResponse.ExchangeEmailResponse"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+  </service>
+</deployment>

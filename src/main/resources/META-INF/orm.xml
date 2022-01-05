@@ -1,0 +1,828 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm
+        http://xmlns.jcp.org/xml/ns/persistence/orm_2_2.xsd"
+	version="2.2">
+
+	<named-native-query name="ConsulVacaciones">
+		<query>
+    	<![CDATA[
+    	SELECT thcptos.thcptos_id,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian = 'NIE109'
+   THEN thlifpres_dias_trabajados
+   ELSE 0
+   END)as diasTrabajados,
+MIN(thlifpres_vac_fecini_disfrute)as thlifpres_vac_fecini_disfrute
+,MAX(thlifpres_vac_fecfin_disfrute)as thlifpres_vac_fecfin_disfrute
+FROM thlifpres 
+LEFT JOIN  thcptos ON thcptos.thcptos_id = thlifpres.thcptos_id
+LEFT JOIN thcptosdian ON thcptosdian.thcptos_id = thcptos.thcptos_id
+where thlifpres_vac_fecini_disfrute >=:fhi AND 
+thlifpres_vac_fecfin_disfrute <= :fhf  and thvida2_id =:thvida2
+group by thcptos.thcptos_id,thlifpres.thvida2_id
+    	]]>
+    	</query>
+	</named-native-query>
+	<named-native-query name="CategoriaCriterio">
+		<query>
+    	<![CDATA[
+    	SELECT * FROM thvida21 where thvida1_id =:thvida1
+    	]]>
+    	</query>
+	</named-native-query>
+	<named-native-query name="NominaElectronica">
+		<query>
+   	  <![CDATA[
+SELECT thvida1.thvida1_id, thvida1.thvida1_k3_nrodoc,
+thvida1.thvida1_apellido1, thvida1.thvida1_apellido2, thvida1.thvida1_nombres,thvida2.thvida2_fecha_inicio, thvida2.thvida2_fecha_retiro,
+MIN(thpertli.thpertli_fecha_inicial)as thpertli_fecha_inicial, MAX(thpertli.thpertli_fecha_final)as thpertli_fecha_final,
+now()as FechaServe,thvida1.thvida1_k2_codhv/*10*/
+,MAX(CASE WHEN thtippro.thtippro_abrev = 'LV' OR thtippro.thtippro_abrev = 'LN' OR thtippro.thtippro_abrev = 'LD' OR thtippro.thtippro_abrev = 'LP' OR thtippro.thtippro_abrev = 'LC' OR thtippro.thtippro_abrev = 'LI' OR thtippro.thtippro_abrev = 'SI' OR thtippro.thtippro_abrev = 'LF' OR thtippro.thtippro_abrev='LN2'
+OR thtippro.thtippro_abrev='N1'OR thtippro.thtippro_abrev='NM' OR thtippro.thtippro_abrev='LV2'
+ THEN 'LN'
+ ELSE thtippro.thtippro_abrev END)AS thtippro_abrev
+,thsocied.thsocied_k3_docident, thpais.thpais_k1_pais
+,thdepar.thdepar_cod,thciudad.thciudad_cod,
+thtipliq.thtipliq_per,thsocied.thsocied_k2_razon,thsocied.thsocied_k3_docident_dv 
+,thsocied.thsocied_direccion_1, pltipcot.pltipcot_cod /*20*/
+,plsubtip.plsubtip_cod,thvida2.thvida2_id,thdocide.thdocide_abrev,thvida1.thvida1_direccion
+,plinfapo.plinfapor_ind_salint,thvida2.thvida2_fecha_hasta, thvida2.thvida2_vlr_remuneracion
+,thvida2.thvida2_ind_pago ,thentext.thentext_k2_desc, thvida22.thvida22_indcta/*30*/
+,thvida22.thvida22_afilcta,
+SUM (CASE WHEN thcptosdian.thcptosdian_id_dian ='NIE070'
+	THEN thmovliq.thmovliq_hrs / (
+select thvarnom_valor from thvarnom where thvarnom_llave='JORNADA')
+	 ELSE 0
+	END)AS diasTrabajados,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE070'
+   THEN thmovliq.thmovliq_vlr
+   ELSE 0
+   END) as sueldoTrabajado,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE071'
+   THEN thmovliq.thmovliq_vlr
+   ELSE 0
+   END) as AuxilioTransporte,
+SUM (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE072'
+	THEN thmovliq.thmovliq_vlr
+	ELSE 0
+	END)as viaticomanualjs,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE073'
+   THEN thmovliq.thmovliq_vlr
+   ELSE 0
+   END) as viaticomanualjsNs,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE076'
+   THEN thmovliq.thmovliq_hrs
+   ELSE 0
+   END)as cantidadHoras, 
+MAX (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE076'
+	THEN (thcptos.thcptos_porc)
+	ELSE 0
+	END) as porcentaje, 
+SUM (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE076'
+	THEN thmovliq.thmovliq_vlr
+	ELSE 0
+	END)as pago,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE081'
+   THEN thmovliq.thmovliq_hrs
+   ELSE 0
+   END)as cantidadHorasNoc, /*40*/
+MAX(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE081'
+   THEN (thcptos.thcptos_porc)
+   ELSE 0
+   END)as porcentajeNoche,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE081'
+   THEN thmovliq.thmovliq_vlr
+   ELSE 0
+   END)as pagoNoche,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE086'
+   THEN thmovliq.thmovliq_hrs
+   ELSE 0
+   END)as cantidadRecNoc,
+MAX(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE086'
+   THEN (thcptos.thcptos_porc)
+   ELSE 0
+   END)as porcentajeRecNoc,
+SUM (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE086'
+	THEN thmovliq.thmovliq_vlr
+	ELSE 0
+	END)as pagoRecNoc,
+SUM (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE091'
+	THEN thmovliq.thmovliq_hrs
+	ELSE 0
+	END)as cantidadFes,
+MAX (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE091'
+	THEN (thcptos.thcptos_porc) 
+	ELSE 0
+	END)as porcentajeFes,
+SUM (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE091'
+	THEN thmovliq.thmovliq_vlr
+	ELSE 0
+	END)as pagoFes, 
+SUM( CASE WHEN thcptosdian.thcptosdian_id_dian='NIE096'
+   THEN thmovliq.thmovliq_hrs
+   ELSE 0
+   END)as cantidadDDF,
+MAX (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE096'
+	THEN thcptos.thcptos_porc
+	ELSE 0
+	END)as porcentajeDDF, /* 50*/
+SUM (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE096'
+	THEN thmovliq.thmovliq_vlr
+	ELSE 0
+	END)as pagoDDF,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE101'
+   THEN thmovliq.thmovliq_hrs
+   ELSE 0
+   END)as cantidadNDF,
+MAX(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE101'
+   THEN (thcptos.thcptos_porc)
+   ELSE 0
+   END)as porcentajeNDF,
+SUM (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE101'
+	THEN thmovliq.thmovliq_vlr
+	ELSE 0
+	END)as pagoNDF,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE106'
+   THEN thmovliq.thmovliq_hrs
+   ELSE 0
+   END)as cantidadRNDF,
+MAX(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE107'
+   THEN (thcptos.thcptos_porc)
+   ELSE 0
+   END)as porcentajeRNDF,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE108'
+   THEN thmovliq.thmovliq_vlr
+   ELSE 0
+   END)as pagoRNDF,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE111'
+   THEN  ceil(thmovliq.thmovliq_hrs / (select thvarnom_valor from thvarnom where thvarnom_llave='JORNADA'))
+   ELSE 0
+   END)as cantidadVacaciones,
+SUM (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE111'
+	THEN thmovliq.thmovliq_vlr
+	ELSE 0
+	END)as pagoVacaciones,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE115'
+	   THEN ceil(thmovliq.thmovliq_hrs/(select thvarnom_valor from thvarnom where thvarnom_llave='JORNADA'))
+	   ELSE 0
+	   END)as cantidadVc,/*60*/
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE115'
+   THEN thmovliq.thmovliq_vlr
+   ELSE 0
+   END)as pagoVc,
+SUM (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE118'
+	THEN thmovliq.thmovliq_vlr
+	ELSE 0
+	END)as pagoprima,
+SUM (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE118'
+	THEN thmovliq.thmovliq_vlr
+	ELSE 0
+	END)as pagoprimaNS,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE120'
+	THEN thmovliq.thmovliq_vlr
+   ELSE 0
+   END)as pagoCensantias,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE122'
+   THEN thmovliq.thmovliq_vlr
+   ELSE 0
+   END)as pagoCenInteres,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE125'
+   THEN ceil(thmovliq.thmovliq_hrs/(select thvarnom_valor from thvarnom where thvarnom_llave='JORNADA'))
+   ELSE 0
+   END)as cantidadIncapacidad,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE125'
+   THEN thmovliq.thmovliq_vlr
+   ELSE 0
+   END)as pagoIncapacidad,
+MAX(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE128'
+   THEN thmovliq.thausent_id
+   ELSE NULL
+   END )as fhiLicencia,
+SUM (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE128'
+	   THEN ceil(thmovliq.thmovliq_hrs/(select thvarnom_valor from thvarnom where thvarnom_llave='JORNADA'))
+	   ELSE 0
+	   END)as cantidadlincenciaMP,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE128'
+	  THEN thmovliq.thmovliq_vlr
+	  ELSE 0
+	  END)as pagolincenciaMP, /*70*/
+SUM (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE139'
+	   THEN thmovliq.thmovliq_vlr
+	   ELSE  0
+	   END)as bonificacion,
+SUM (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE140'
+	   THEN thmovliq.thmovliq_vlr
+	   ELSE 0
+	   END)as bonificacionNS,
+SUM (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE141'
+	   THEN thmovliq.thmovliq_vlr
+	   ELSE 0
+	   END)as Auxilios,
+SUM (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE142'
+	   THEN thmovliq.thmovliq_vlr
+	   ELSE 0
+	   END)as AuxilioNS,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE152'
+		  THEN thmovliq.thmovliq_vlr
+		  ELSE 0
+		  END)as PagoNs,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE160'
+		  THEN thmovliq.thmovliq_vlr
+		  ELSE 0
+		  END) as Indemnizacion,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE201'
+		   THEN thmovliq.thmovliq_vlr
+		   ELSE 0
+		   END)as Reintegro201,
+MAX(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE161'
+		THEN thcptos.thcptos_porc
+	    ELSE 0
+		END) as porcentajeSalud,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE161'
+		   THEN thmovliq.thmovliq_vlr
+		   ELSE 0
+		   END)as deduccionsalud,
+MAX(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE164'
+		THEN thcptos.thcptos_porc
+	    ELSE 0
+		END) as porcentajePension, /*80*/
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE164'
+		   THEN thmovliq.thmovliq_vlr
+		   ELSE 0
+		   END)as deduccionpension,
+MAX(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE167'
+		THEN thcptos.thcptos_porc
+	    ELSE 0
+		END) as porcentajeSP,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE167'
+	   THEN thmovliq.thmovliq_vlr
+	   ELSE 0
+	   END)as deduccionSP,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE170' AND thmovliq.thmovliq_thcptos_nat='DED'
+	   THEN thmovliq.thmovliq_vlr
+	   ELSE 0
+	   END)as DeduccionSub,
+SUM(CASE WHEN thmovliq.thmovliq_thcptos_nat='DEV'
+		THEN thmovliq.thmovliq_vlr
+		ELSE 0
+		END)as DevengadosTotal,
+SUM(CASE WHEN thmovliq.thmovliq_thcptos_nat='DED'
+		THEN thmovliq.thmovliq_vlr
+		ELSE 0
+		END)as DeduccionesTotal,
+		MAX(thmovliq.thlifpres_id),
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian ='NIE197'
+    THEN thmovliq.thmovliq_vlr
+    ELSE 0
+   END) as OtrasDeduccion,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE157'
+	THEN thmovliq.thmovliq_vlr
+	ELSE 0
+	END) as ApoyoSost,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE184'
+   THEN thmovliq.thmovliq_vlr
+   ELSE 0
+   END)AS Reintegro,/*90*/
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE201'
+   THEN thmovliq.thmovliq_vlr
+   ELSE 0
+   END)AS ReintegroNomina,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE185'
+   THEN thmovliq.thmovliq_vlr
+   ELSE 0
+   END)AS DeudaEmpresa,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE180'
+   THEN thmovliq.thmovliq_vlr
+   ELSE 0
+   END)AS Cooperativa,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE148'
+   THEN thmovliq.thmovliq_vlr
+   ELSE 0 
+   END)AS ConceptoNS,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE147'
+   THEN thmovliq.thmovliq_vlr
+   ELSE 0
+   END)AS ConceptoS,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE155'
+   THEN thmovliq.thmovliq_vlr
+   ELSE 0
+   END)as Comision,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE196'
+   THEN thmovliq.thmovliq_vlr
+   ELSE 0
+   END)AS Anticipo,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE170' AND thmovliq.thmovliq_thcptos_nat='DED'
+	   THEN thcptos.thcptos_porc
+	   ELSE 0
+	   END)as PorcentajeSub,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE177'
+	   THEN  thmovliq.thmovliq_vlr
+	   ELSE 0
+	   END)as RetencionFuente, 
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE176'
+   THEN thmovliq.thmovliq_vlr
+   ELSE 0
+   END)AS DeduccionLibranza,/*100*/
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE170' AND thmovliq.thmovliq_thcptos_nat='DEV'
+	   THEN thmovliq.thmovliq_vlr
+	   ELSE 0
+	   END)as DevengadoSub
+FROM thctrliq
+	INNER JOIN  thmovliq ON thmovliq.thctrliq_id = thctrliq.thctrliq_id
+	INNER JOIN  thcptos ON thcptos.thcptos_id = thmovliq.thcptos_id
+	INNER JOIN thcptosdian ON thcptosdian.thcptos_id = thcptos.thcptos_id
+	INNER JOIN  thpertli ON thpertli.thpertli_id = thctrliq.thpertli_id
+	INNER JOIN  thtippro ON thtippro.thtippro_id = thctrliq.thtippro_id
+	INNER JOIN  thvida2 ON thvida2.thvida2_id = thmovliq.thvida2_id 
+	INNER JOIN  thvida1 ON thvida1.thvida1_id = thvida2.thvida1_id
+	INNER JOIN  thsocied ON thsocied.thsocied_id = thctrliq.thsocied_id
+	INNER JOIN  thciudad ON thciudad.thciudad_id = thsocied.thciudad_id
+	INNER JOIN  thdepar ON thdepar.thdepar_id = thciudad.thdepar_id
+	INNER JOIN  thpais ON thpais.thpais_id = thdepar.thpais_id
+	INNER JOIN  thtipliq ON thtipliq.thtipliq_id = thvida2.thtipliq_id
+	LEFT JOIN plinfapo ON plinfapo.thvida2_id = thvida2.thvida2_id
+	LEFT JOIN pltipcot ON pltipcot.pltipcot_id = plinfapo.pltipcot_id
+	LEFT JOIN plsubtip ON plsubtip.plsubtip_id = plinfapo.plsubtip_id
+	INNER JOIN thdocide ON thdocide.thdocide_id = thvida1.thdocide_id
+	LEFT JOIN thvida22 ON thvida22.thvida1_id = thvida1.thvida1_id
+	LEFT JOIN thentext ON thentext.thentext_id = thvida22.thentext_id
+	WHERE thpertli.thpertli_fecha_inicial >=:fhi  AND
+	thpertli.thpertli_fecha_final <=:fhf
+	group by  thvida1.thvida1_id, thvida2.thvida2_id, 
+	thsocied.thsocied_id,thciudad.thciudad_id, thdepar.thdepar_id, thpais.thpais_id, thtipliq.thtipliq_id,
+	plinfapo.plinfapo_id, pltipcot.pltipcot_id, plsubtip.plsubtip_id
+	,thdocide.thdocide_id, thvida22.thvida22_id, thentext.thentext_id
+	order by thvida1.thvida1_apellido1, thvida1.thvida1_nombres asc 
+   	  
+	   ]]>
+   	</query>
+	</named-native-query>
+		<named-native-query name="insertGenXml">
+		<query>
+  <![CDATA[
+  INSERT INTO public.thnome(
+	 thdocide_id, thnome_prefijo, thnome_fecha_emision, thnome_nro_k3_document, thnome_nombres, thnome_total_comprobante, thestnom_id)
+	VALUES ( :iddoc, :prefijo, :fecha, :nrodoc, :nombres, :total, :estado);
+  
+  ]]>
+  </query>
+	</named-native-query>
+
+	<named-native-query name="consultipodoc">
+		<query><![CDATA[
+select * from thdocide where thdocide.thdocide_abrev =:iddoc
+  ]]></query>
+	</named-native-query>
+
+	<named-native-query name="ausentimosThvida2">
+		<query>
+   	<![CDATA[
+SELECT thausent.thausent_k1_fecini, thausent.thausent_k3_fecfin ,thausent.thausent_tipo,
+thausent.thausent_dias, thausent.thausent_horas, thausent.thausent_vlr_socied, thausent.thausent_vlr_entext from thausent 
+WHERE thausent.thausent_k1_fecini>=:fhi and thausent.thausent_k3_fecfin <=:fhf and thvida2_id=:thvida2
+ORDER BY thausent.thausent_k1_fecini
+   	]]>
+   </query>
+	</named-native-query>
+	<named-native-query name="diastrabajados">
+		<query>
+   		<![CDATA[
+SELECT 
+thvida2.thvida2_fecha_retiro, 
+CASE 
+WHEN thvida2.thvida2_fecha_retiro IS NULL 
+THEN EXTRACT(DAY FROM(MAX(thpertli.thpertli_fecha_final)- MIN(thvida2.thvida2_fecha_inicio)))  
+WHEN thvida2.thvida2_fecha_retiro IS NOT NULL
+THEN EXTRACT(DAY FROM(MAX(thvida2.thvida2_fecha_retiro) - MIN(thvida2.thvida2_fecha_inicio))) 
+END as TiempoLaborado  FROM thctrliq
+INNER JOIN  thmovliq ON thmovliq.thctrliq_id = thctrliq.thctrliq_id
+INNER JOIN  thpertli ON thpertli.thpertli_id = thctrliq.thpertli_id
+INNER JOIN  thvida2 ON thvida2.thvida2_id = thmovliq.thvida2_id
+WHERE thvida2.thvida1_id =:thvida1 AND
+thpertli.thpertli_fecha_inicial >=:fhi  AND
+thpertli.thpertli_fecha_final <=:fhf
+group by thvida2.thvida2_fecha_retiro
+   		]]>
+   	</query>
+	</named-native-query>
+	<named-native-query name="tipoCriteriothv1">
+		<query>
+   	  <![CDATA[
+		SELECT * FROM thvida21 where thvida1_id=:thvida1
+   	  ]]>
+   	  </query>
+	</named-native-query>
+
+	<named-native-query name="variablesne">
+		<query><![CDATA[
+   	SELECT * FROM thvarnom where thvarnom_llave =:llave
+   ]]></query>
+	</named-native-query>
+	<named-native-query name="thlifpres">
+	<query>
+		<![CDATA[
+	select * from thlifpres where thlifpres_id =:thlifpres
+		]]>
+	</query>
+	</named-native-query>
+		<named-native-query name="thnomefile">
+		<query>
+		<![CDATA[
+		select * from thnome where thnome_xfile=:file
+		]]>
+		</query>
+	</named-native-query>
+	<named-native-query name="sendXmlFh">
+	<query>
+	<![CDATA[
+	select * from thnome where thnome_fecha_emision =:fh
+	]]></query>
+	</named-native-query>
+	<named-native-query name="thestnom">
+	<query>
+	<![CDATA[
+	select * from thestnom where thestnom_id =:code
+	]]>
+	</query>
+	</named-native-query>
+	<named-native-query name="ErrosrXml">
+	<query>
+	<![CDATA[
+	select * from thtracking where thestnom_id=99
+	]]>
+	</query>
+	</named-native-query>
+	<named-native-query name="thvida1">
+	<query>
+	<![CDATA[
+	select thvida1_id,thvida1_k3_nrodoc from thvida1 where thvida1.thvida1_k3_nrodoc=:thvida
+	]]>
+	</query>
+	</named-native-query>
+	<named-native-query name="NominaElectronicaError">
+		<query>
+   	  <![CDATA[
+SELECT thvida1.thvida1_id, thvida1.thvida1_k3_nrodoc,
+thvida1.thvida1_apellido1, thvida1.thvida1_apellido2, thvida1.thvida1_nombres,thvida2.thvida2_fecha_inicio, thvida2.thvida2_fecha_retiro,
+MIN(thpertli.thpertli_fecha_inicial)as thpertli_fecha_inicial, MAX(thpertli.thpertli_fecha_final)as thpertli_fecha_final,
+now()as FechaServe,thvida1.thvida1_k2_codhv/*10*/
+,MAX(CASE WHEN thtippro.thtippro_abrev = 'LV' OR thtippro.thtippro_abrev = 'LN' OR thtippro.thtippro_abrev = 'LD' OR thtippro.thtippro_abrev = 'LP' OR thtippro.thtippro_abrev = 'LC' OR thtippro.thtippro_abrev = 'LI' OR thtippro.thtippro_abrev = 'SI' OR thtippro.thtippro_abrev = 'LF' OR thtippro.thtippro_abrev='LN2'
+OR thtippro.thtippro_abrev='N1'OR thtippro.thtippro_abrev='NM' OR thtippro.thtippro_abrev='LV2'
+ THEN 'LN'
+ ELSE thtippro.thtippro_abrev END)AS thtippro_abrev
+,thsocied.thsocied_k3_docident, thpais.thpais_k1_pais
+,thdepar.thdepar_cod,thciudad.thciudad_cod,
+thtipliq.thtipliq_per,thsocied.thsocied_k2_razon,thsocied.thsocied_k3_docident_dv 
+,thsocied.thsocied_direccion_1, pltipcot.pltipcot_cod /*20*/
+,plsubtip.plsubtip_cod,thvida2.thvida2_id,thdocide.thdocide_abrev,thvida1.thvida1_direccion
+,plinfapo.plinfapor_ind_salint,thvida2.thvida2_fecha_hasta, thvida2.thvida2_vlr_remuneracion
+,thvida2.thvida2_ind_pago ,thentext.thentext_k2_desc, thvida22.thvida22_indcta/*30*/
+,thvida22.thvida22_afilcta,
+SUM (CASE WHEN thcptosdian.thcptosdian_id_dian ='NIE070'
+	THEN thmovliq.thmovliq_hrs / (
+select thvarnom_valor from thvarnom where thvarnom_llave='JORNADA')
+	 ELSE 0
+	END)AS diasTrabajados,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE070'
+   THEN thmovliq.thmovliq_vlr
+   ELSE 0
+   END) as sueldoTrabajado,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE071'
+   THEN thmovliq.thmovliq_vlr
+   ELSE 0
+   END) as AuxilioTransporte,
+SUM (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE072'
+	THEN thmovliq.thmovliq_vlr
+	ELSE 0
+	END)as viaticomanualjs,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE073'
+   THEN thmovliq.thmovliq_vlr
+   ELSE 0
+   END) as viaticomanualjsNs,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE076'
+   THEN thmovliq.thmovliq_hrs
+   ELSE 0
+   END)as cantidadHoras, 
+MAX (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE076'
+	THEN (thcptos.thcptos_porc)
+	ELSE 0
+	END) as porcentaje, 
+SUM (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE076'
+	THEN thmovliq.thmovliq_vlr
+	ELSE 0
+	END)as pago,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE081'
+   THEN thmovliq.thmovliq_hrs
+   ELSE 0
+   END)as cantidadHorasNoc, /*40*/
+MAX(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE081'
+   THEN (thcptos.thcptos_porc)
+   ELSE 0
+   END)as porcentajeNoche,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE081'
+   THEN thmovliq.thmovliq_vlr
+   ELSE 0
+   END)as pagoNoche,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE086'
+   THEN thmovliq.thmovliq_hrs
+   ELSE 0
+   END)as cantidadRecNoc,
+MAX(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE086'
+   THEN (thcptos.thcptos_porc)
+   ELSE 0
+   END)as porcentajeRecNoc,
+SUM (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE086'
+	THEN thmovliq.thmovliq_vlr
+	ELSE 0
+	END)as pagoRecNoc,
+SUM (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE091'
+	THEN thmovliq.thmovliq_hrs
+	ELSE 0
+	END)as cantidadFes,
+MAX (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE091'
+	THEN (thcptos.thcptos_porc) 
+	ELSE 0
+	END)as porcentajeFes,
+SUM (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE091'
+	THEN thmovliq.thmovliq_vlr
+	ELSE 0
+	END)as pagoFes, 
+SUM( CASE WHEN thcptosdian.thcptosdian_id_dian='NIE096'
+   THEN thmovliq.thmovliq_hrs
+   ELSE 0
+   END)as cantidadDDF,
+MAX (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE096'
+	THEN thcptos.thcptos_porc
+	ELSE 0
+	END)as porcentajeDDF, /* 50*/
+SUM (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE096'
+	THEN thmovliq.thmovliq_vlr
+	ELSE 0
+	END)as pagoDDF,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE101'
+   THEN thmovliq.thmovliq_hrs
+   ELSE 0
+   END)as cantidadNDF,
+MAX(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE101'
+   THEN (thcptos.thcptos_porc)
+   ELSE 0
+   END)as porcentajeNDF,
+SUM (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE101'
+	THEN thmovliq.thmovliq_vlr
+	ELSE 0
+	END)as pagoNDF,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE106'
+   THEN thmovliq.thmovliq_hrs
+   ELSE 0
+   END)as cantidadRNDF,
+MAX(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE107'
+   THEN (thcptos.thcptos_porc)
+   ELSE 0
+   END)as porcentajeRNDF,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE108'
+   THEN thmovliq.thmovliq_vlr
+   ELSE 0
+   END)as pagoRNDF,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE111'
+   THEN  ceil(thmovliq.thmovliq_hrs / (select thvarnom_valor from thvarnom where thvarnom_llave='JORNADA'))
+   ELSE 0
+   END)as cantidadVacaciones,
+SUM (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE111'
+	THEN thmovliq.thmovliq_vlr
+	ELSE 0
+	END)as pagoVacaciones,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE115'
+	   THEN ceil(thmovliq.thmovliq_hrs/(select thvarnom_valor from thvarnom where thvarnom_llave='JORNADA'))
+	   ELSE 0
+	   END)as cantidadVc,/*60*/
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE115'
+   THEN thmovliq.thmovliq_vlr
+   ELSE 0
+   END)as pagoVc,
+SUM (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE118'
+	THEN thmovliq.thmovliq_vlr
+	ELSE 0
+	END)as pagoprima,
+SUM (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE118'
+	THEN thmovliq.thmovliq_vlr
+	ELSE 0
+	END)as pagoprimaNS,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE120'
+	THEN thmovliq.thmovliq_vlr
+   ELSE 0
+   END)as pagoCensantias,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE122'
+   THEN thmovliq.thmovliq_vlr
+   ELSE 0
+   END)as pagoCenInteres,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE125'
+   THEN ceil(thmovliq.thmovliq_hrs/(select thvarnom_valor from thvarnom where thvarnom_llave='JORNADA'))
+   ELSE 0
+   END)as cantidadIncapacidad,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE125'
+   THEN thmovliq.thmovliq_vlr
+   ELSE 0
+   END)as pagoIncapacidad,
+MAX(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE128'
+   THEN thmovliq.thausent_id
+   ELSE NULL
+   END )as fhiLicencia,
+SUM (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE128'
+	   THEN ceil(thmovliq.thmovliq_hrs/(select thvarnom_valor from thvarnom where thvarnom_llave='JORNADA'))
+	   ELSE 0
+	   END)as cantidadlincenciaMP,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE128'
+	  THEN thmovliq.thmovliq_vlr
+	  ELSE 0
+	  END)as pagolincenciaMP, /*70*/
+SUM (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE139'
+	   THEN thmovliq.thmovliq_vlr
+	   ELSE  0
+	   END)as bonificacion,
+SUM (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE140'
+	   THEN thmovliq.thmovliq_vlr
+	   ELSE 0
+	   END)as bonificacionNS,
+SUM (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE141'
+	   THEN thmovliq.thmovliq_vlr
+	   ELSE 0
+	   END)as Auxilios,
+SUM (CASE WHEN thcptosdian.thcptosdian_id_dian='NIE142'
+	   THEN thmovliq.thmovliq_vlr
+	   ELSE 0
+	   END)as AuxilioNS,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE152'
+		  THEN thmovliq.thmovliq_vlr
+		  ELSE 0
+		  END)as PagoNs,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE160'
+		  THEN thmovliq.thmovliq_vlr
+		  ELSE 0
+		  END) as Indemnizacion,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE201'
+		   THEN thmovliq.thmovliq_vlr
+		   ELSE 0
+		   END)as Reintegro201,
+MAX(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE161'
+		THEN thcptos.thcptos_porc
+	    ELSE 0
+		END) as porcentajeSalud,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE161'
+		   THEN thmovliq.thmovliq_vlr
+		   ELSE 0
+		   END)as deduccionsalud,
+MAX(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE164'
+		THEN thcptos.thcptos_porc
+	    ELSE 0
+		END) as porcentajePension, /*80*/
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE164'
+		   THEN thmovliq.thmovliq_vlr
+		   ELSE 0
+		   END)as deduccionpension,
+MAX(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE167'
+		THEN thcptos.thcptos_porc
+	    ELSE 0
+		END) as porcentajeSP,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE167'
+	   THEN thmovliq.thmovliq_vlr
+	   ELSE 0
+	   END)as deduccionSP,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE170' AND thmovliq.thmovliq_thcptos_nat='DED'
+	   THEN thmovliq.thmovliq_vlr
+	   ELSE 0
+	   END)as DeduccionSub,
+SUM(CASE WHEN thmovliq.thmovliq_thcptos_nat='DEV'
+		THEN thmovliq.thmovliq_vlr
+		ELSE 0
+		END)as DevengadosTotal,
+SUM(CASE WHEN thmovliq.thmovliq_thcptos_nat='DED'
+		THEN thmovliq.thmovliq_vlr
+		ELSE 0
+		END)as DeduccionesTotal,
+		MAX(thmovliq.thlifpres_id),
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian ='NIE197'
+    THEN thmovliq.thmovliq_vlr
+    ELSE 0
+   END) as OtrasDeduccion,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE157'
+	THEN thmovliq.thmovliq_vlr
+	ELSE 0
+	END) as ApoyoSost,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE184'
+   THEN thmovliq.thmovliq_vlr
+   ELSE 0
+   END)AS Reintegro,/*90*/
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE201'
+   THEN thmovliq.thmovliq_vlr
+   ELSE 0
+   END)AS ReintegroNomina,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE185'
+   THEN thmovliq.thmovliq_vlr
+   ELSE 0
+   END)AS DeudaEmpresa,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE180'
+   THEN thmovliq.thmovliq_vlr
+   ELSE 0
+   END)AS Cooperativa,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE148'
+   THEN thmovliq.thmovliq_vlr
+   ELSE 0 
+   END)AS ConceptoNS,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE147'
+   THEN thmovliq.thmovliq_vlr
+   ELSE 0
+   END)AS ConceptoS,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE155'
+   THEN thmovliq.thmovliq_vlr
+   ELSE 0
+   END)as Comision,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE196'
+   THEN thmovliq.thmovliq_vlr
+   ELSE 0
+   END)AS Anticipo,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE170' AND thmovliq.thmovliq_thcptos_nat='DED'
+	   THEN thcptos.thcptos_porc
+	   ELSE 0
+	   END)as PorcentajeSub,
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE177'
+	   THEN  thmovliq.thmovliq_vlr
+	   ELSE 0
+	   END)as RetencionFuente, 
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE176'
+   THEN thmovliq.thmovliq_vlr
+   ELSE 0
+   END)AS DeduccionLibranza,/*100*/
+SUM(CASE WHEN thcptosdian.thcptosdian_id_dian='NIE170' AND thmovliq.thmovliq_thcptos_nat='DEV'
+	   THEN thmovliq.thmovliq_vlr
+	   ELSE 0
+	   END)as DevengadoSub
+FROM thctrliq
+INNER JOIN  thmovliq ON thmovliq.thctrliq_id = thctrliq.thctrliq_id
+INNER JOIN  thcptos ON thcptos.thcptos_id = thmovliq.thcptos_id
+INNER JOIN thcptosdian ON thcptosdian.thcptos_id = thcptos.thcptos_id
+INNER JOIN  thpertli ON thpertli.thpertli_id = thctrliq.thpertli_id
+INNER JOIN  thtippro ON thtippro.thtippro_id = thctrliq.thtippro_id
+INNER JOIN  thvida2 ON thvida2.thvida2_id = thmovliq.thvida2_id 
+INNER JOIN  thvida1 ON thvida1.thvida1_id = thvida2.thvida1_id
+INNER JOIN  thsocied ON thsocied.thsocied_id = thctrliq.thsocied_id
+INNER JOIN  thciudad ON thciudad.thciudad_id = thsocied.thciudad_id
+INNER JOIN  thdepar ON thdepar.thdepar_id = thciudad.thdepar_id
+INNER JOIN  thpais ON thpais.thpais_id = thdepar.thpais_id
+INNER JOIN  thtipliq ON thtipliq.thtipliq_id = thvida2.thtipliq_id
+LEFT JOIN plinfapo ON plinfapo.thvida2_id = thvida2.thvida2_id
+LEFT JOIN pltipcot ON pltipcot.pltipcot_id = plinfapo.pltipcot_id
+LEFT JOIN plsubtip ON plsubtip.plsubtip_id = plinfapo.plsubtip_id
+INNER JOIN thdocide ON thdocide.thdocide_id = thvida1.thdocide_id
+LEFT JOIN thvida22 ON thvida22.thvida1_id = thvida1.thvida1_id
+LEFT JOIN thentext ON thentext.thentext_id = thvida22.thentext_id
+WHERE thvida1.thvida1_id=:thvida AND  thpertli.thpertli_fecha_inicial >=:fhi  AND
+thpertli.thpertli_fecha_final <=:fhf 
+group by  thvida1.thvida1_id, thvida2.thvida2_id, 
+thsocied.thsocied_id,thciudad.thciudad_id, thdepar.thdepar_id, thpais.thpais_id, thtipliq.thtipliq_id,
+plinfapo.plinfapo_id, pltipcot.pltipcot_id, plsubtip.plsubtip_id
+,thdocide.thdocide_id, thvida22.thvida22_id, thentext.thentext_id
+order by thvida1.thvida1_apellido1, thvida1.thvida1_nombres asc 
+	   ]]>
+   	</query>
+	</named-native-query>
+	
+	<named-native-query name="conceptosLiquidados">
+	<query>
+	<![CDATA[
+SELECT thcptos.thcptos_id, thcptos.thcptos_k2_desc, thcptos.thcptos_k1_cod FROM thmovliq 
+INNER JOIN thcptos ON thcptos.thcptos_id = thmovliq.thcptos_id
+WHERE thmovliq_fecini >=:fhi
+AND thmovliq_fecfin <=:fhf
+GROUP BY thcptos.thcptos_id
+	]]>	
+	</query>
+	</named-native-query>
+	<named-native-query name="thcptos">
+	<query>
+	<![CDATA[
+	SELECT * FROM thcptosdian WHERE thcptos_id=:thcptos
+	]]>
+	</query>
+	</named-native-query>
+	<named-native-query name="thsocied">
+	<query>
+	<![CDATA[
+	select thsocied_telefonos,thciudad.thciudad_desc, thsocied_mail from thsocied
+	INNER JOIN thciudad ON thciudad.thciudad_id = thsocied.thciudad_id
+	]]>
+	</query>
+	</named-native-query>
+	
+	<named-native-query name="thcargos">
+	<query>
+	<![CDATA[
+	select thcargos.thcargos_k3_desc, thvida2_id  from thvida2
+INNER JOIN thvida1 ON thvida1.thvida1_id = thvida2.thvida1_id
+INNER JOIN thcargos ON thcargos.thcargos_id = thvida2.thcargos_id
+WHERE thvida1.thvida1_k3_nrodoc=:nrodocument
+	]]>
+	</query>
+	</named-native-query>
+</entity-mappings>

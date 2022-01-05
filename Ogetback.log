@@ -1,0 +1,49 @@
+2022-01-05 13:40:15.563  INFO 18068 --- [main] com.oget.ogetpro.OgetBackApplication     : Starting OgetBackApplication using Java 1.8.0_241 on DESKTOP-UIAKGPT with PID 18068 (C:\desarrollo\Documentacion\Requerimientos\nominaElectronica\ogetBack\target\classes started by Usuario in C:\desarrollo\Documentacion\Requerimientos\nominaElectronica\ogetBack)
+2022-01-05 13:40:15.569  INFO 18068 --- [main] com.oget.ogetpro.OgetBackApplication     : No active profile set, falling back to default profiles: default
+2022-01-05 13:40:17.175  INFO 18068 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-01-05 13:40:17.523  INFO 18068 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 331 ms. Found 26 JPA repository interfaces.
+2022-01-05 13:40:17.525  INFO 18068 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-01-05 13:40:17.637  INFO 18068 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 110 ms. Found 13 JPA repository interfaces.
+2022-01-05 13:40:19.398  INFO 18068 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 9090 (http)
+2022-01-05 13:40:19.415  INFO 18068 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-01-05 13:40:19.416  INFO 18068 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.45]
+2022-01-05 13:40:19.564  INFO 18068 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-01-05 13:40:19.565  INFO 18068 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3924 ms
+2022-01-05 13:40:19.802  INFO 18068 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-01-05 13:40:19.952  INFO 18068 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.30.Final
+2022-01-05 13:40:20.310  INFO 18068 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-01-05 13:40:24.088  INFO 18068 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2022-01-05 13:41:00.942  INFO 18068 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-01-05 13:41:01.013  INFO 18068 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-01-05 13:41:01.045  INFO 18068 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-01-05 13:41:03.092  INFO 18068 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2022-01-05 13:41:14.855  INFO 18068 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-01-05 13:41:14.868  INFO 18068 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-01-05 13:41:17.516  INFO 18068 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2022-01-05 13:41:17.911  INFO 18068 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 9090 (http) with context path ''
+2022-01-05 13:41:17.937  INFO 18068 --- [main] com.oget.ogetpro.OgetBackApplication     : Started OgetBackApplication in 63.236 seconds (JVM running for 65.025)
+2022-01-05 13:41:36.680  INFO 18068 --- [RMI TCP Connection(8)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2022-01-05 13:41:36.952  INFO 18068 --- [RMI TCP Connection(8)-127.0.0.1] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2022-01-05 13:41:36.964  INFO 18068 --- [RMI TCP Connection(8)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-01-05 13:41:36.965  INFO 18068 --- [RMI TCP Connection(8)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-01-05 13:50:44.438  INFO 15916 --- [main] c.oget.ogetpro.OgetBackApplicationTests  : Starting OgetBackApplicationTests using Java 1.8.0_241 on DESKTOP-UIAKGPT with PID 15916 (started by Usuario in C:\desarrollo\Documentacion\Requerimientos\nominaElectronica\ogetBack)
+2022-01-05 13:50:44.444  INFO 15916 --- [main] c.oget.ogetpro.OgetBackApplicationTests  : No active profile set, falling back to default profiles: default
+2022-01-05 13:50:47.896  INFO 15916 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-01-05 13:50:48.259  INFO 15916 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 344 ms. Found 26 JPA repository interfaces.
+2022-01-05 13:50:48.263  INFO 15916 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-01-05 13:50:48.334  INFO 15916 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 69 ms. Found 13 JPA repository interfaces.
+2022-01-05 13:50:50.576  INFO 15916 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-01-05 13:50:50.847  INFO 15916 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.30.Final
+2022-01-05 13:50:51.255  INFO 15916 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-01-05 13:50:56.714  INFO 15916 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2022-01-05 13:51:35.898  INFO 15916 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-01-05 13:51:35.956  INFO 15916 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-01-05 13:51:36.007  INFO 15916 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-01-05 13:51:38.089  INFO 15916 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2022-01-05 13:51:49.172  INFO 15916 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-01-05 13:51:49.197  INFO 15916 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-01-05 13:51:52.846  INFO 15916 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2022-01-05 13:51:53.835  INFO 15916 --- [main] c.oget.ogetpro.OgetBackApplicationTests  : Started OgetBackApplicationTests in 70.429 seconds (JVM running for 73.152)
+2022-01-05 13:51:54.185  INFO 15916 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2022-01-05 13:51:54.200  INFO 15916 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-01-05 13:51:54.207  INFO 15916 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
